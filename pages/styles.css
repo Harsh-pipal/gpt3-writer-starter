@@ -124,9 +124,22 @@ textarea {
 
 
 .prompt-buttons {
-    display: flex;
     place-content: center;
     align-items: center;
+    justify-content: flex-start;
+    flex: 0 0 auto;
+    flex-flow: row nowrap;
+    gap: 12px;
+    height: min-content;
+    overflow: hidden;
+    padding: 0px;
+    position: relative;
+    width: 100%;
+}
+
+.prompt-buttonsr {
+    place-content: right;
+    align-items: right;
     justify-content: flex-end;
     flex: 0 0 auto;
     flex-flow: row nowrap;
@@ -135,6 +148,12 @@ textarea {
     overflow: hidden;
     padding: 0px;
     position: relative;
+    width: 100%;
+    
+}
+
+.temp {
+    display: flex;
     width: 100%;
 }
 
@@ -172,7 +191,7 @@ textarea {
 .generate-button {
     place-content: flex-start;
     align-items: flex-start;
-    background-color: black;
+    background-color:  #1da1f2;
     border-radius: 100px;
     display: flex;
     flex: 0 0 auto;
@@ -186,6 +205,7 @@ textarea {
     width: min-content;
     will-change: transform;
     cursor: pointer;
+    margin-left: 30%;
 }
 
 .generate {
@@ -198,6 +218,35 @@ textarea {
 }
 
 .generate p {
+    color: rgb(255, 255, 255);
+    margin: 0;
+}
+
+.generate-buttonr {
+
+    background-color:  #1da1f2;
+    height: min-content;
+    overflow: hidden;
+    padding: 16px 24px;
+    position: relative;
+    text-decoration: none;
+    width: min-content;
+    will-change: transform;
+    cursor: pointer;
+    border-radius: 100px;
+    margin-left: 4%;
+}
+
+.generater {
+    outline: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    flex-shrink: 0;
+    transform: none;
+}
+
+.generater p {
     color: rgb(255, 255, 255);
     margin: 0;
 }
@@ -365,7 +414,7 @@ textarea {
     }
 
     .header-title h1 {
-        font-size: 50px;
+        font-size: 10px;
     }
 
     .header-subtitle h2 {
@@ -388,12 +437,29 @@ textarea {
     .prompt-box {
         width: 100%;
     }
+
+    .prompt-buttonsr {
+        justify-content: right;
+    }
+
+    
 }
 
 
 
  /* Loading ring animation */
-.loader {
+ .loader {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: inline-block;
+    border-top: 2px solid #FFF;
+    border-right: 2px solid transparent;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+}
+
+.loaderr {
     width: 18px;
     height: 18px;
     border-radius: 50%;
@@ -413,3 +479,4 @@ textarea {
         transform: rotate(360deg);
     }
 }
+
