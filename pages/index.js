@@ -1,11 +1,14 @@
 import Head from 'next/head';
 import Image from 'next/image';
-import buildspaceLogo from '../assets/buildspace-logo.png';
+
 import { useState } from 'react';
 const Home = () => {
   const [userInput, setUserInput] = useState('');
-  const [apiOutput, setApiOutput] = useState('')
-  const [isGenerating, setIsGenerating] = useState(false)
+  const [apiOutput, setApiOutput] = useState('');
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [isRefining, setIsRefining] = useState(false);
+
+
 
   const callGenerateEndpoint = async () => {
     setIsGenerating(true);
@@ -25,7 +28,33 @@ const Home = () => {
 
     setApiOutput(`${output.text}`);
     setIsGenerating(false);
+    console.log(userInput)
+
   }
+
+
+  const callRefine = async () => {
+    setIsRefining(true);
+    
+    console.log("Calling OpenAI...");
+
+    const response = await fetch('/api/refine', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      
+      body: JSON.stringify({ userInput}),
+    });
+
+    const data = await response.json();
+    const { output } = data;
+    console.log("OpenAI replied...", output.text)
+
+    setApiOutput(`${output.text}`);
+    setIsRefining(false);
+  }
+
   // console.log(userInput)
   const onUserChangedText = (event) => {
     console.log(event.target.value);
@@ -34,7 +63,7 @@ const Home = () => {
   return (
     <div className="root">
       <Head>
-        <title>Tweet writer</title>
+        <title>Tweet Writer</title>
       </Head>
       <div className="container">
         <div className="header">
@@ -43,7 +72,7 @@ const Home = () => {
           </div>
 
           <div className="header-subtitle">
-            <h2>Insert the title for your Tweet</h2>
+            <h2>Insert the topic of your Tweet</h2>
           </div>
         </div>
       </div>
@@ -55,17 +84,28 @@ const Home = () => {
           onChange={onUserChangedText}
         />
         
-        <div className="prompt-buttons">
+   
+        <div className="temp">
           <a
-            className={isGenerating ? 'generate-button loading' : 'generate-button'}
+            className={isGenerating ? 'generate-button loading prompt-buttons' : 'generate-button prompt-buttons'}
             onClick={callGenerateEndpoint}
           >
-            <div className="generate">
-            {isGenerating ? <span className="loader"></span> : <p>Generate</p>}
+            <div className="generate prompt-buttons">
+              {isGenerating ? <span className="loader prompt-buttons"></span> : <p>Generate</p>}
+            </div>
+          </a>
+   
+          <a
+            className={isRefining ? 'generate-buttonr loadingr prompt-buttonsr ' : 'generate-buttonr prompt-buttonsr'}
+            onClick={callRefine}
+          >
+            <div className="generater prompt-buttonsr">
+              {isRefining ? <span className="loaderr prompt-buttonsr"></span> : <p>Refine</p>}
             </div>
           </a>
         </div>
 
+      
         {apiOutput && (
           <div className="output">
             <div className="output-header-container">
@@ -79,18 +119,7 @@ const Home = () => {
           </div>
         )}
       </div>
-      <div className="badge-container grow">
-        <a
-          href="https://buildspace.so/builds/ai-writer"
-          target="_blank"
-          rel="noreferrer"
-        >
-          <div className="badge">
-            <Image src={buildspaceLogo} alt="buildspace logo" />
-            <p>build with buildspace</p>
-          </div>
-        </a>
-      </div>
+      
     </div>
   );
 };
